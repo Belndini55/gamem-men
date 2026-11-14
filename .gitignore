@@ -1,0 +1,16 @@
+# Byte-compiled
+__pycache__/
+*.py[cod]
+
+# PyInstaller
+build/
+dist/
+*.spec
+
+# App data
+cache/
+*.log
+
+# OS
+Thumbs.db
+.DS_Store

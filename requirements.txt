@@ -1,0 +1,5 @@
+# GameMen nie wymaga żadnych zewnętrznych zależności —
+# działa na bibliotece standardowej Pythona 3.9+.
+#
+# Opcjonalnie, do budowania pliku .exe:
+# pyinstaller>=6.0
