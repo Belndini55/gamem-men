@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GameMen — Menedżer Gier</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%237c5cff'/><text x='50' y='68' font-size='52' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'>GM</text></svg>">
+</head>
+<body>
+  <div class="app">
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-mark">GM</div>
+        <div class="logo-text">Game<span>Men</span></div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-item active" data-filter="all">
+          <svg viewBox="0 0 24 24" class="nav-icon"><path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1 2v10h14V7H5zm2 2h4v2H7V9zm0 4h7v2H7v-2z"/></svg>
+          <span>Wszystkie gry</span>
+          <span class="nav-count" id="count-all">0</span>
+        </button>
+        <button class="nav-item" data-filter="favorites">
+          <svg viewBox="0 0 24 24" class="nav-icon"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9L12 3.5z"/></svg>
+          <span>Ulubione</span>
+          <span class="nav-count" id="count-fav">0</span>
+        </button>
+      </nav>
+
+      <div class="nav-label">Platformy</div>
+      <nav class="nav" id="platform-nav"></nav>
+
+      <div class="sidebar-footer">
+        <button class="btn-scan" id="btn-scan">
+          <svg viewBox="0 0 24 24" class="spin-icon"><path d="M12 4a8 8 0 0 1 8 8h-2.5a5.5 5.5 0 1 0-1.6 3.9l-1.8-1.8H20v5.5h-2.2A8 8 0 1 1 12 4z"/></svg>
+          <span>Skanuj ponownie</span>
+        </button>
+        <button class="btn-ghost" id="btn-settings">
+          <svg viewBox="0 0 24 24" class="nav-icon"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/><path d="M19.4 13a7.8 7.8 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-1.7-1L15 3H9l-.3 2.6c-.6.2-1.2.6-1.7 1l-2.4-1-2 3.4L2.6 11a7.8 7.8 0 0 0 0 2l-2 1.6 2 3.4 2.4-1c.5.4 1.1.8 1.7 1L9 21h6l.3-2.6c.6-.2 1.2-.6 1.7-1l2.4 1 2-3.4-2-1.6z"/></svg>
+          <span>Ustawienia</span>
+        </button>
+        <div class="mode-badge" id="mode-badge">…</div>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN ===== -->
+    <main class="main">
+      <div class="demo-banner" id="demo-banner" hidden>
+        <strong>Tryb demo.</strong> To przykładowa biblioteka — uruchom GameMen na Windows, aby zobaczyć swoje prawdziwe gry ze Steama, Epic, GOG, Xbox i innych.
+      </div>
+
+      <header class="topbar">
+        <div class="search-wrap">
+          <svg viewBox="0 0 24 24" class="search-icon"><path d="M10 4a6 6 0 1 0 3.6 10.8l4.7 4.7 1.4-1.4-4.7-4.7A6 6 0 0 0 10 4zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8z"/></svg>
+          <input type="search" id="search" placeholder="Szukaj gier…" autocomplete="off">
+        </div>
+        <div class="topbar-right">
+          <select id="sort">
+            <option value="name">Nazwa A–Z</option>
+            <option value="name-desc">Nazwa Z–A</option>
+            <option value="size">Od największych</option>
+            <option value="date">Ostatnio zainstalowane</option>
+            <option value="platform">Platforma</option>
+          </select>
+          <div class="view-toggle" id="view-toggle">
+            <button class="view-btn active" data-view="grid" title="Siatka">
+              <svg viewBox="0 0 24 24"><path d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 0h6v6h-6v-6z"/></svg>
+            </button>
+            <button class="view-btn" data-view="list" title="Lista">
+              <svg viewBox="0 0 24 24"><path d="M4 6h2v2H4V6zm4 0h12v2H8V6zM4 11h2v2H4v-2zm4 0h12v2H8v-2zM4 16h2v2H4v-2zm4 0h12v2H8v-2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <section class="stats" id="stats">
+        <div class="stat-card"><div class="stat-value" id="stat-games">0</div><div class="stat-label">Gier w bibliotece</div></div>
+        <div class="stat-card"><div class="stat-value" id="stat-size">0 GB</div><div class="stat-label">Łączny rozmiar</div></div>
+        <div class="stat-card"><div class="stat-value" id="stat-platforms">0</div><div class="stat-label">Platform</div></div>
+        <div class="stat-card"><div class="stat-value" id="stat-biggest">—</div><div class="stat-label">Największa gra</div></div>
+      </section>
+
+      <section class="content">
+        <div class="content-head">
+          <h1 id="section-title">Wszystkie gry</h1>
+          <div class="content-meta" id="content-meta"></div>
+        </div>
+        <div class="grid" id="grid"></div>
+        <div class="empty" id="empty" hidden>
+          <div class="empty-icon">🎮</div>
+          <h2>Brak wyników</h2>
+          <p>Spróbuj innej frazy lub zmień filtr platformy.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ===== MODAL ===== -->
+  <div class="modal-overlay" id="modal" hidden>
+    <div class="modal">
+      <button class="modal-close" id="modal-close" title="Zamknij">✕</button>
+      <div class="modal-cover" id="modal-cover"></div>
+      <div class="modal-body">
+        <div class="modal-platform" id="modal-platform"></div>
+        <h2 class="modal-title" id="modal-title"></h2>
+        <div class="modal-meta" id="modal-meta"></div>
+        <div class="modal-actions">
+          <button class="btn-play" id="modal-play">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7L8 5z"/></svg>
+            GRAJ
+          </button>
+          <button class="btn-secondary" id="modal-folder">Otwórz folder</button>
+          <button class="btn-icon" id="modal-fav" title="Ulubione">★</button>
+          <button class="btn-icon danger" id="modal-uninstall" title="Odinstaluj">🗑</button>
+        </div>
+        <div class="modal-path" id="modal-path"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SETTINGS MODAL ===== -->
+  <div class="modal-overlay" id="settings-modal" hidden>
+    <div class="modal settings">
+      <button class="modal-close" id="settings-close" title="Zamknij">✕</button>
+      <div class="modal-body">
+        <h2 class="modal-title">Ustawienia skanowania</h2>
+        <p class="settings-hint">Dodatkowe foldery do skanowania (jeden na linię), np. <code>D:\Games</code>:</p>
+        <textarea id="settings-folders" rows="5" placeholder="D:\Games&#10;E:\Gry"></textarea>
+        <div class="modal-actions">
+          <button class="btn-play" id="settings-save">Zapisz i przeskanuj</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toasts"></div>
+
+  <div class="scan-overlay" id="scan-overlay" hidden>
+    <div class="scan-box">
+      <div class="spinner"></div>
+      <div>Skanowanie biblioteki gier…</div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
